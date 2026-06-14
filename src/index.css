@@ -1,0 +1,312 @@
+@import "tailwindcss";
+
+@theme {
+  --font-bebas: "Bebas Neue", cursive;
+  --font-mono:  "Space Mono", monospace;
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #00000e;
+  --card-bg:   rgba(3, 3, 22, 0.82);
+  --cyan:      #00e5ff;
+  --cyan-glow: rgba(0, 229, 255, 0.38);
+  --purple:    #7b2fff;
+  --white:     #d8eeff;
+  --muted:     rgba(180, 220, 255, 0.35);
+  --border:    rgba(0, 229, 255, 0.10);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--white);
+  font-family: "Space Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+canvas { position: fixed !important; inset: 0; z-index: 0; }
+
+/* ── UI Layer ───────────────────────────────────────────────────────── */
+.ui-layer {
+  position: fixed; inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.ui-layer * { pointer-events: none; }
+
+.header, nav, .cta-btn,
+.hero-name-block, .hero-ctas a,
+.btn-primary, .btn-ghost,
+.panel-pos, .info-card, .card-link,
+.chip-wrap, .skill-chip,
+.hero-badge, .ind-dot, .ind-col {
+  pointer-events: auto;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────────────── */
+.header {
+  position: absolute; top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 44px; z-index: 20;
+  background: linear-gradient(to bottom, rgba(0,0,14,.85) 0%, transparent 100%);
+}
+.logo {
+  font-family: "Bebas Neue", cursive;
+  font-size: 18px; letter-spacing: .22em;
+  color: var(--cyan);
+  text-shadow: 0 0 22px var(--cyan-glow);
+}
+.nav { display: flex; gap: 30px; }
+.nav span {
+  font-size: 9px; letter-spacing: .20em; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; transition: color .2s;
+}
+.nav span:hover { color: var(--white); }
+.cta-btn {
+  border: 1px solid rgba(0,229,255,.25); color: var(--cyan);
+  padding: 7px 18px; font-family: "Space Mono", monospace;
+  font-size: 9px; letter-spacing: .14em; text-decoration: none;
+  transition: background .2s, box-shadow .2s; border-radius: 2px;
+}
+.cta-btn:hover {
+  background: rgba(0,229,255,.08);
+  box-shadow: 0 0 14px rgba(0,229,255,.12);
+}
+
+/* ── Barre progression ──────────────────────────────────────────────── */
+.prog-bg {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: rgba(0,229,255,.06);
+}
+.prog-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(to right, var(--purple), var(--cyan));
+  box-shadow: 0 0 8px var(--cyan-glow);
+  transition: width .1s linear;
+}
+
+/* ── HUD ────────────────────────────────────────────────────────────── */
+.hud-rot {
+  position: absolute; bottom: 14px; left: 20px;
+  font-size: 8px; letter-spacing: .22em; color: rgba(0,229,255,.28);
+}
+.hud-pct {
+  position: absolute; bottom: 14px; right: 44px;
+  font-size: 8px; letter-spacing: .22em; color: rgba(0,229,255,.28);
+}
+
+/* ── Dots navigation droite ─────────────────────────────────────────── */
+.ind-col {
+  position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 18px; align-items: center;
+}
+.ind-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,.22);
+  transition: opacity .3s, transform .3s, background .3s;
+  cursor: pointer;
+  position: relative;
+}
+.ind-dot:hover { background: var(--cyan) !important; }
+.ind-dot[title]:hover::before {
+  content: attr(title);
+  position: absolute; right: 16px; top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 7px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--cyan); background: rgba(0,0,14,.90);
+  padding: 3px 8px; border: 1px solid rgba(0,229,255,.16);
+  pointer-events: none;
+}
+
+/* ── Wrapper panneau ────────────────────────────────────────────────── */
+.ov-wrap {
+  position: absolute; inset: 0;
+  will-change: opacity;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════════════════════════════════ */
+.chip-wrap {
+  position: absolute;
+  will-change: transform;
+}
+.skill-chip {
+  display: block;
+  padding: 5px 11px;
+  background: rgba(0, 229, 255, 0.04);
+  border: 1px solid rgba(0,229,255,.15);
+  border-radius: 3px;
+  font-size: 8px; letter-spacing: .14em; color: var(--muted);
+  white-space: nowrap;
+  cursor: default;
+  transition: transform .22s, color .22s, border-color .22s, box-shadow .22s;
+  user-select: none;
+}
+.skill-chip:hover {
+  transform: scale(1.13);
+  color: var(--cyan);
+  border-color: rgba(0,229,255,.42);
+  box-shadow: 0 0 16px rgba(0,229,255,.18);
+}
+
+/* Nom + CTA — bas gauche */
+.hero-name-block {
+  position: absolute;
+  bottom: 8vh; left: 44px;
+  max-width: 540px;
+  will-change: transform;
+}
+.hero-eyebrow {
+  font-size: 8px; letter-spacing: .24em; text-transform: uppercase;
+  color: rgba(0,229,255,.45); margin-bottom: 12px;
+}
+.hero-name {
+  font-family: "Bebas Neue", cursive;
+  font-size: clamp(60px, 9vw, 112px);
+  line-height: .88; letter-spacing: .03em;
+  display: flex; flex-direction: column; gap: 2px;
+  margin-bottom: 14px;
+}
+.hero-solid   { color: var(--white); }
+.hero-outline {
+  -webkit-text-stroke: 1.5px var(--cyan);
+  color: transparent;
+  filter: drop-shadow(0 0 14px var(--cyan-glow));
+}
+.hero-sub {
+  font-size: 10px; letter-spacing: .13em; color: var(--muted);
+  margin-bottom: 22px; line-height: 1.7;
+}
+.hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Badge diplôme */
+.hero-badge {
+  position: absolute; top: 96px; right: 56px;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  border: 1px solid rgba(0,229,255,.16);
+  padding: 12px 18px;
+  background: rgba(0,229,255,.03);
+  border-radius: 3px;
+}
+.badge-icon  { font-size: 20px; color: var(--cyan); }
+.badge-label { font-size: 8px; letter-spacing: .28em; color: var(--cyan); }
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute; bottom: 20px;
+  left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.scroll-hint span {
+  font-size: 7px; letter-spacing: .32em; color: rgba(0,229,255,.22);
+}
+.scroll-line {
+  width: 1px; height: 34px;
+  background: linear-gradient(to bottom, var(--cyan), transparent);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   PANNEAU ABOUT / PROJECTS
+   ════════════════════════════════════════════════════════════════════ */
+.panel-pos {
+  position: absolute;
+  left: 44px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 420px;
+}
+.info-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 60px rgba(0,0,28,.8),
+    0 0 0 1px rgba(255,255,255,.02),
+    inset 0 0 1px rgba(0,229,255,.08);
+  position: relative; overflow: hidden;
+  transition: box-shadow .3s;
+  cursor: default;
+  will-change: transform;
+}
+.info-card:hover {
+  box-shadow:
+    0 0 80px rgba(0,0,40,.9),
+    0 0 0 1px rgba(0,229,255,.06),
+    inset 0 0 1px rgba(0,229,255,.14);
+}
+
+/* Bande couleur en haut des cartes projet */
+.card-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  border-radius: 12px 12px 0 0;
+}
+
+.card-eyebrow {
+  font-size: 8px; letter-spacing: .24em;
+  color: rgba(0,229,255,.55); margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.card-title {
+  font-family: "Bebas Neue", cursive;
+  font-size: clamp(24px, 3.2vw, 36px);
+  letter-spacing: .04em; color: var(--white);
+  margin-bottom: 12px; line-height: 1.05;
+}
+.card-text {
+  font-size: 10px; line-height: 1.95; color: var(--muted);
+  margin-bottom: 16px; white-space: pre-line;
+}
+.chip-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+.chip {
+  padding: 3px 9px;
+  background: rgba(100,160,255,.04);
+  border: 1px solid var(--border); border-radius: 3px;
+  font-size: 7.5px; color: var(--muted); letter-spacing: .06em;
+  transition: color .2s, border-color .2s;
+}
+.chip:hover { color: var(--white); border-color: rgba(100,160,255,.22); }
+.card-link {
+  display: inline-block;
+  font-size: 8.5px; letter-spacing: .18em; text-decoration: none;
+  color: var(--cyan); opacity: .65;
+  transition: opacity .2s, letter-spacing .2s;
+}
+.card-link:hover { opacity: 1; letter-spacing: .22em; }
+
+/* ── Boutons ────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-block; padding: 10px 22px;
+  background: rgba(0,229,255,.08); border: 1px solid rgba(0,229,255,.28);
+  color: var(--cyan); font-family: "Space Mono", monospace;
+  font-size: 9px; letter-spacing: .10em; text-decoration: none; border-radius: 4px;
+  transition: background .22s, box-shadow .22s;
+}
+.btn-primary:hover {
+  background: rgba(0,229,255,.16);
+  box-shadow: 0 0 18px var(--cyan-glow);
+}
+.btn-ghost {
+  display: inline-block; padding: 10px 22px;
+  border: 1px solid var(--border); color: var(--muted);
+  font-family: "Space Mono", monospace; font-size: 9px;
+  letter-spacing: .10em; text-decoration: none; border-radius: 4px;
+  transition: color .2s, border-color .2s;
+}
+.btn-ghost:hover { border-color: rgba(180,220,255,.22); color: var(--white); }
+
+/* ── Animation ──────────────────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: .15; }
+  50%       { opacity: 1; }
+}
